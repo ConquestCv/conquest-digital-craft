@@ -1,137 +1,125 @@
-import { useState, useEffect } from "react";
-import { Link, useLocation } from "react-router-dom";
-import { Menu, X, Moon, Sun, Mail } from "lucide-react";
+import { useEffect, useState } from "react";
+import { Menu, X, Moon, Sun, Terminal } from "lucide-react";
 import { useTheme } from "@/hooks/use-theme";
-import profileImage from "@/assets/conquest-profile.jpg";
 
-const navItems = [
-  { name: "About", path: "/about" },
-  { name: "Experience", path: "/experience" },
-  { name: "Skills", path: "/skills" },
-  { name: "Education", path: "/education" },
-  { name: "Contact", path: "/contact" },
+const sections = [
+  { id: "about", label: "About" },
+  { id: "problems", label: "Problems" },
+  { id: "workflows", label: "Workflows" },
+  { id: "operations", label: "Operations" },
+  { id: "research", label: "Research" },
+  { id: "writing", label: "Writing" },
+  { id: "skills", label: "Skills" },
+  { id: "contact", label: "Contact" },
 ];
 
 const Header = () => {
-  const [isScrolled, setIsScrolled] = useState(false);
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const location = useLocation();
+  const [scrolled, setScrolled] = useState(false);
+  const [open, setOpen] = useState(false);
+  const [active, setActive] = useState<string>("");
   const { theme, toggleTheme } = useTheme();
 
   useEffect(() => {
-    const handleScroll = () => setIsScrolled(window.scrollY > 8);
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
+    const onScroll = () => {
+      setScrolled(window.scrollY > 8);
+      // section spy
+      let current = "";
+      for (const s of sections) {
+        const el = document.getElementById(s.id);
+        if (el && el.getBoundingClientRect().top <= 120) current = s.id;
+      }
+      setActive(current);
+    };
+    window.addEventListener("scroll", onScroll, { passive: true });
+    onScroll();
+    return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
-  useEffect(() => {
-    setIsMobileMenuOpen(false);
-  }, [location.pathname]);
+  const jump = (id: string) => {
+    setOpen(false);
+    const el = document.getElementById(id);
+    if (el) el.scrollIntoView({ behavior: "smooth", block: "start" });
+  };
 
   return (
     <header
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-200 ${
-        isScrolled
-          ? "bg-background/85 backdrop-blur-md border-b border-border"
+      className={`fixed top-0 inset-x-0 z-50 transition-all duration-300 ${
+        scrolled
+          ? "bg-background/80 backdrop-blur-xl border-b border-border"
           : "bg-transparent border-b border-transparent"
       }`}
     >
       <div className="section-container">
         <div className="flex items-center justify-between h-16">
-          {/* Logo */}
-          <Link
-            to="/"
-            className="flex items-center gap-2 group"
+          <button
+            onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+            className="flex items-center gap-2.5 group"
             aria-label="Home"
           >
-            <img
-              src={profileImage}
-              alt="Aisiri Conquest"
-              className="w-7 h-7 rounded-full object-cover border border-border ring-1 ring-foreground/5"
-            />
-            <span className="text-sm font-heading font-semibold text-foreground hidden sm:inline">
-              Aisiri Conquest
+            <span className="w-8 h-8 rounded-md border border-accent/40 bg-accent/10 flex items-center justify-center text-accent">
+              <Terminal className="w-4 h-4" />
             </span>
-          </Link>
+            <span className="text-sm font-heading font-semibold hidden sm:inline">
+              conquest<span className="text-accent">.ops</span>
+            </span>
+          </button>
 
-          {/* Desktop Nav */}
-          <nav className="hidden md:flex items-center gap-7">
-            {navItems.map((item) => (
-              <Link
-                key={item.path}
-                to={item.path}
-                className={`nav-link ${
-                  location.pathname === item.path ? "active" : ""
+          <nav className="hidden lg:flex items-center gap-1">
+            {sections.map((s) => (
+              <button
+                key={s.id}
+                onClick={() => jump(s.id)}
+                className={`px-3 py-1.5 rounded-md text-[13px] font-medium transition-colors ${
+                  active === s.id
+                    ? "text-accent bg-accent/10"
+                    : "text-muted-foreground hover:text-foreground"
                 }`}
               >
-                {item.name}
-              </Link>
+                {s.label}
+              </button>
             ))}
           </nav>
 
-          {/* Actions */}
           <div className="flex items-center gap-2">
-            <button
-              onClick={toggleTheme}
-              className="theme-toggle"
-              aria-label="Toggle theme"
-            >
-              {theme === "dark" ? (
-                <Sun className="w-4 h-4" />
-              ) : (
-                <Moon className="w-4 h-4" />
-              )}
+            <button onClick={toggleTheme} className="icon-btn" aria-label="Toggle theme">
+              {theme === "dark" ? <Sun className="w-4 h-4" /> : <Moon className="w-4 h-4" />}
             </button>
-
-            <Link
-              to="/contact"
+            <button
+              onClick={() => jump("contact")}
               className="hidden sm:inline-flex btn-primary !py-2 !px-4 !text-xs"
             >
-              <Mail className="w-3.5 h-3.5" />
               Hire Me
-            </Link>
-
+            </button>
             <button
-              onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-              className="md:hidden theme-toggle"
-              aria-label="Toggle menu"
+              onClick={() => setOpen(!open)}
+              className="lg:hidden icon-btn"
+              aria-label="Menu"
             >
-              {isMobileMenuOpen ? (
-                <X className="w-4 h-4" />
-              ) : (
-                <Menu className="w-4 h-4" />
-              )}
+              {open ? <X className="w-4 h-4" /> : <Menu className="w-4 h-4" />}
             </button>
           </div>
         </div>
       </div>
 
-      {/* Mobile Menu */}
       <div
-        className={`md:hidden absolute top-full left-0 right-0 bg-background border-b border-border transition-all duration-200 ${
-          isMobileMenuOpen
-            ? "opacity-100 visible translate-y-0"
-            : "opacity-0 invisible -translate-y-2"
+        className={`lg:hidden absolute top-full inset-x-0 bg-background/95 backdrop-blur-xl border-b border-border transition-all duration-200 ${
+          open ? "opacity-100 visible" : "opacity-0 invisible -translate-y-2"
         }`}
       >
-        <nav className="section-container py-4 flex flex-col gap-1">
-          {navItems.map((item) => (
-            <Link
-              key={item.path}
-              to={item.path}
-              className={`text-sm font-medium py-2.5 px-3 rounded-md transition-colors ${
-                location.pathname === item.path
-                  ? "text-foreground bg-secondary"
+        <nav className="section-container py-4 grid grid-cols-2 gap-1">
+          {sections.map((s) => (
+            <button
+              key={s.id}
+              onClick={() => jump(s.id)}
+              className={`text-left text-sm font-medium py-2.5 px-3 rounded-md ${
+                active === s.id
+                  ? "text-accent bg-accent/10"
                   : "text-muted-foreground hover:text-foreground hover:bg-secondary/60"
               }`}
             >
-              {item.name}
-            </Link>
+              {s.label}
+            </button>
           ))}
-          <Link to="/contact" className="btn-primary mt-3">
-            <Mail className="w-3.5 h-3.5" />
-            Hire Me
-          </Link>
         </nav>
       </div>
     </header>
