@@ -1,0 +1,348 @@
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/*
+  Design system: "Operator" — Customer Experience Specialist
+  Tone: precise, calm, professional. Inspired by Linear / Vercel / Stripe docs.
+  Restrained colour, sharp borders, minimal gradient, generous whitespace.
+*/
+
+@layer base {
+  :root {
+    /* Light — clean paper */
+    --background: 210 20% 99%;
+    --foreground: 220 25% 12%;
+
+    --card: 0 0% 100%;
+    --card-foreground: 220 25% 12%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 220 25% 12%;
+
+    /* Primary: deep ink — authoritative, not loud */
+    --primary: 220 35% 18%;
+    --primary-foreground: 0 0% 100%;
+
+    --secondary: 220 14% 96%;
+    --secondary-foreground: 220 25% 18%;
+
+    --muted: 220 14% 96%;
+    --muted-foreground: 220 9% 46%;
+
+    /* Accent: restrained teal — used sparingly for emphasis only */
+    --accent: 178 70% 32%;
+    --accent-foreground: 0 0% 100%;
+
+    --destructive: 0 72% 51%;
+    --destructive-foreground: 0 0% 100%;
+
+    --success: 152 60% 36%;
+    --warning: 38 92% 48%;
+
+    --border: 220 13% 91%;
+    --input: 220 13% 91%;
+    --ring: 220 35% 18%;
+
+    --radius: 0.625rem;
+
+    --surface: 220 14% 97%;
+    --surface-hover: 220 14% 94%;
+
+    --shadow-xs: 0 1px 2px hsl(220 25% 12% / 0.04);
+    --shadow-sm: 0 1px 3px hsl(220 25% 12% / 0.06), 0 1px 2px hsl(220 25% 12% / 0.04);
+    --shadow-md: 0 4px 12px hsl(220 25% 12% / 0.06), 0 2px 4px hsl(220 25% 12% / 0.04);
+    --shadow-lg: 0 12px 32px hsl(220 25% 12% / 0.08), 0 4px 8px hsl(220 25% 12% / 0.04);
+
+    --font-heading: 'Plus Jakarta Sans', system-ui, sans-serif;
+    --font-body: 'Inter', system-ui, sans-serif;
+    --font-mono: 'JetBrains Mono', ui-monospace, monospace;
+
+    --sidebar-background: 0 0% 100%;
+    --sidebar-foreground: 220 25% 12%;
+    --sidebar-primary: 220 35% 18%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 220 14% 96%;
+    --sidebar-accent-foreground: 220 25% 18%;
+    --sidebar-border: 220 13% 91%;
+    --sidebar-ring: 220 35% 18%;
+  }
+
+  .dark {
+    --background: 222 25% 7%;
+    --foreground: 210 15% 96%;
+
+    --card: 222 22% 10%;
+    --card-foreground: 210 15% 96%;
+
+    --popover: 222 22% 10%;
+    --popover-foreground: 210 15% 96%;
+
+    /* In dark mode, primary inverts to a soft off-white for buttons */
+    --primary: 210 20% 96%;
+    --primary-foreground: 222 25% 9%;
+
+    --secondary: 222 18% 14%;
+    --secondary-foreground: 210 15% 96%;
+
+    --muted: 222 18% 14%;
+    --muted-foreground: 220 10% 60%;
+
+    --accent: 178 65% 48%;
+    --accent-foreground: 222 25% 9%;
+
+    --destructive: 0 65% 55%;
+    --destructive-foreground: 0 0% 100%;
+
+    --success: 152 55% 50%;
+    --warning: 38 92% 55%;
+
+    --border: 222 18% 18%;
+    --input: 222 18% 18%;
+    --ring: 178 65% 48%;
+
+    --surface: 222 22% 11%;
+    --surface-hover: 222 18% 15%;
+
+    --shadow-xs: 0 1px 2px hsl(0 0% 0% / 0.3);
+    --shadow-sm: 0 1px 3px hsl(0 0% 0% / 0.4);
+    --shadow-md: 0 4px 12px hsl(0 0% 0% / 0.4);
+    --shadow-lg: 0 12px 32px hsl(0 0% 0% / 0.5);
+
+    --sidebar-background: 222 22% 10%;
+    --sidebar-foreground: 210 15% 96%;
+    --sidebar-primary: 178 65% 48%;
+    --sidebar-primary-foreground: 222 25% 9%;
+    --sidebar-accent: 222 18% 14%;
+    --sidebar-accent-foreground: 210 15% 96%;
+    --sidebar-border: 222 18% 18%;
+    --sidebar-ring: 178 65% 48%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  html {
+    scroll-behavior: smooth;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  body {
+    @apply bg-background text-foreground font-body;
+    font-family: var(--font-body);
+    font-feature-settings: "cv02", "cv03", "cv04", "cv11", "ss01";
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-heading);
+    @apply font-semibold tracking-tight text-foreground;
+    letter-spacing: -0.02em;
+  }
+
+  /* Subtle grid pattern body background — adds engineered feel without gradients */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    z-index: -1;
+    pointer-events: none;
+    background-image:
+      linear-gradient(to right, hsl(var(--border) / 0.4) 1px, transparent 1px),
+      linear-gradient(to bottom, hsl(var(--border) / 0.4) 1px, transparent 1px);
+    background-size: 64px 64px;
+    mask-image: radial-gradient(ellipse 80% 60% at 50% 0%, black 30%, transparent 80%);
+    opacity: 0.5;
+  }
+
+  ::selection {
+    background-color: hsl(var(--accent) / 0.25);
+    color: hsl(var(--foreground));
+  }
+}
+
+@layer components {
+  .section-container {
+    @apply max-w-6xl mx-auto px-5 sm:px-6 lg:px-8;
+  }
+
+  /* Eyebrow label — small, mono, accent-tinted */
+  .eyebrow {
+    @apply inline-flex items-center gap-2 text-[11px] font-mono font-medium uppercase tracking-[0.14em] text-muted-foreground;
+  }
+
+  .eyebrow::before {
+    content: '';
+    @apply inline-block w-6 h-px bg-accent;
+  }
+
+  /* Buttons — flat, sharp, no gradient */
+  .btn-primary {
+    @apply inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-md font-medium text-sm bg-primary text-primary-foreground transition-all duration-150;
+    box-shadow: var(--shadow-sm);
+  }
+  .btn-primary:hover {
+    @apply opacity-90;
+    box-shadow: var(--shadow-md);
+    transform: translateY(-1px);
+  }
+  .btn-primary:active { transform: translateY(0); }
+
+  .btn-secondary {
+    @apply inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-md font-medium text-sm border border-border bg-card text-foreground transition-all duration-150;
+  }
+  .btn-secondary:hover {
+    @apply border-foreground/30 bg-secondary;
+  }
+
+  .btn-accent {
+    @apply inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-md font-medium text-sm bg-accent text-accent-foreground transition-all duration-150;
+  }
+  .btn-accent:hover { @apply opacity-90; transform: translateY(-1px); }
+
+  /* Navigation link */
+  .nav-link {
+    @apply relative text-sm font-medium text-muted-foreground hover:text-foreground transition-colors duration-200;
+  }
+  .nav-link.active { @apply text-foreground; }
+  .nav-link.active::after {
+    content: '';
+    @apply absolute -bottom-[18px] left-0 right-0 h-px bg-foreground;
+  }
+
+  /* Card — sharp, flat, professional */
+  .card-flat {
+    @apply rounded-lg border border-border bg-card transition-all duration-200;
+  }
+  .card-flat:hover {
+    @apply border-foreground/20;
+    box-shadow: var(--shadow-sm);
+  }
+
+  .card-interactive {
+    @apply rounded-lg border border-border bg-card p-5 transition-all duration-200;
+  }
+  .card-interactive:hover {
+    @apply border-foreground/25;
+    box-shadow: var(--shadow-md);
+    transform: translateY(-2px);
+  }
+
+  /* Stat badge — clean tag */
+  .stat-badge {
+    @apply inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md text-[11px] font-medium border border-border bg-card text-muted-foreground;
+  }
+
+  .badge-accent {
+    @apply inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md text-[11px] font-medium border bg-accent/10 text-accent border-accent/25;
+  }
+
+  .badge-success {
+    @apply inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md text-[11px] font-medium;
+    color: hsl(var(--success));
+    background: hsl(var(--success) / 0.1);
+    border: 1px solid hsl(var(--success) / 0.25);
+  }
+
+  /* Page header */
+  .page-header {
+    @apply pt-32 pb-10 sm:pt-36 sm:pb-14;
+  }
+
+  .page-title {
+    @apply text-3xl md:text-4xl lg:text-5xl font-bold mb-3 tracking-tight;
+  }
+
+  .page-subtitle {
+    @apply text-base md:text-lg text-muted-foreground max-w-2xl leading-relaxed;
+  }
+
+  /* Section divider */
+  .section-divider {
+    @apply border-t border-border;
+  }
+
+  /* Theme toggle */
+  .theme-toggle {
+    @apply p-2 rounded-md border border-border bg-card text-foreground transition-all duration-150;
+  }
+  .theme-toggle:hover { @apply bg-secondary border-foreground/25; }
+
+  /* Mono pill (for KPIs, codes) */
+  .mono-pill {
+    @apply inline-flex items-center px-2 py-0.5 rounded text-[11px] font-mono font-medium bg-secondary text-foreground border border-border;
+  }
+
+  /* Timeline */
+  .timeline-rail {
+    @apply absolute left-2 top-2 bottom-2 w-px bg-border;
+  }
+  .timeline-marker {
+    @apply absolute -left-[3px] w-2 h-2 rounded-full bg-accent ring-4 ring-background;
+  }
+
+  /* Stat value display */
+  .stat-value {
+    @apply text-3xl md:text-4xl font-bold tracking-tight;
+    font-family: var(--font-heading);
+    font-feature-settings: "tnum";
+  }
+
+  /* Underline accent for emphasis text */
+  .accent-underline {
+    @apply relative inline-block;
+  }
+  .accent-underline::after {
+    content: '';
+    @apply absolute left-0 right-0 -bottom-1 h-[3px] bg-accent rounded-full;
+  }
+}
+
+@layer utilities {
+  .font-heading { font-family: var(--font-heading); }
+  .font-body    { font-family: var(--font-body); }
+  .font-mono    { font-family: var(--font-mono); }
+
+  .animate-fade-in { animation: fade-in 0.5s ease-out forwards; }
+  .animate-slide-up { animation: slide-up 0.5s ease-out forwards; opacity: 0; }
+
+  .stagger-1 { animation-delay: 0.05s; }
+  .stagger-2 { animation-delay: 0.1s; }
+  .stagger-3 { animation-delay: 0.15s; }
+  .stagger-4 { animation-delay: 0.2s; }
+  .stagger-5 { animation-delay: 0.25s; }
+  .stagger-6 { animation-delay: 0.3s; }
+
+  /* Subtle dot pattern — used inside cards for texture */
+  .dot-pattern {
+    background-image: radial-gradient(circle, hsl(var(--border)) 1px, transparent 1px);
+    background-size: 16px 16px;
+  }
+
+  /* Numbered marker (for "01.", "02.") */
+  .num-marker {
+    @apply font-mono text-xs text-accent font-medium;
+  }
+}
+
+@keyframes fade-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes slide-up {
+  from { opacity: 0; transform: translateY(12px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes pulse-dot {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.4; }
+}
+
+.animate-pulse-dot { animation: pulse-dot 2s ease-in-out infinite; }
