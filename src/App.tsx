@@ -6,6 +6,14 @@ import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { ThemeProvider } from "./hooks/use-theme";
 import Layout from "./components/layout/Layout";
 import HomePage from "./pages/HomePage";
+import AboutPage from "./pages/AboutPage";
+import ProcessPage from "./pages/ProcessPage";
+import WorkPage from "./pages/WorkPage";
+import OperationsPage from "./pages/OperationsPage";
+import ResearchPage from "./pages/ResearchPage";
+import WritingPage from "./pages/WritingPage";
+import SkillsPage from "./pages/SkillsPage";
+import ContactPage from "./pages/ContactPage";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -20,12 +28,16 @@ const App = () => (
           <Layout>
             <Routes>
               <Route path="/" element={<HomePage />} />
-              {/* Legacy routes → single page */}
-              <Route path="/about" element={<Navigate to="/#about" replace />} />
-              <Route path="/experience" element={<Navigate to="/#problems" replace />} />
-              <Route path="/skills" element={<Navigate to="/#skills" replace />} />
-              <Route path="/education" element={<Navigate to="/#about" replace />} />
-              <Route path="/contact" element={<Navigate to="/#contact" replace />} />
+              <Route path="/about" element={<AboutPage />} />
+              <Route path="/process" element={<ProcessPage />} />
+              <Route path="/work" element={<WorkPage />} />
+              <Route path="/operations" element={<OperationsPage />} />
+              <Route path="/research" element={<ResearchPage />} />
+              <Route path="/writing" element={<WritingPage />} />
+              <Route path="/skills" element={<SkillsPage />} />
+              <Route path="/contact" element={<ContactPage />} />
+              <Route path="/experience" element={<Navigate to="/work" replace />} />
+              <Route path="/education" element={<Navigate to="/about" replace />} />
               <Route path="*" element={<NotFound />} />
             </Routes>
           </Layout>

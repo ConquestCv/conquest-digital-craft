@@ -1,4 +1,5 @@
 import { ArrowRight, Download, Sparkles, Zap, Search, Bot } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 import profileImage from "@/assets/conquest-profile.jpg";
 import resumePdf from "@/assets/resume.pdf.asset.json";
 
@@ -10,8 +11,8 @@ const chips = [
 ];
 
 const Hero = () => {
-  const scrollTo = (id: string) =>
-    document.getElementById(id)?.scrollIntoView({ behavior: "smooth" });
+  const navigate = useNavigate();
+
 
   return (
     <section className="relative pt-32 sm:pt-40 pb-20 overflow-hidden">
@@ -65,10 +66,10 @@ const Hero = () => {
             </p>
 
             <div className="animate-slide-up stagger-4 flex flex-wrap items-center gap-3">
-              <button onClick={() => scrollTo("problems")} className="btn-primary">
+              <button onClick={() => navigate("/work")} className="btn-primary">
                 View my work <ArrowRight className="w-4 h-4" />
               </button>
-              <button onClick={() => scrollTo("contact")} className="btn-secondary">
+              <button onClick={() => navigate("/contact")} className="btn-secondary">
                 Contact me
               </button>
               <a
