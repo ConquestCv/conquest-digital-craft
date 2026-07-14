@@ -66,10 +66,10 @@ const Hero = () => {
             </p>
 
             <div className="animate-slide-up stagger-4 flex flex-wrap items-center gap-3">
-              <button onClick={() => scrollTo("problems")} className="btn-primary">
+              <button onClick={() => navigate("/work")} className="btn-primary">
                 View my work <ArrowRight className="w-4 h-4" />
               </button>
-              <button onClick={() => scrollTo("contact")} className="btn-secondary">
+              <button onClick={() => navigate("/contact")} className="btn-secondary">
                 Contact me
               </button>
               <a
