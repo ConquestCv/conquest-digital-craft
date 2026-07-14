@@ -1,4 +1,5 @@
 import { ArrowRight, Download, Sparkles, Zap, Search, Bot } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 import profileImage from "@/assets/conquest-profile.jpg";
 import resumePdf from "@/assets/resume.pdf.asset.json";
 
@@ -10,8 +11,8 @@ const chips = [
 ];
 
 const Hero = () => {
-  const scrollTo = (id: string) =>
-    document.getElementById(id)?.scrollIntoView({ behavior: "smooth" });
+  const navigate = useNavigate();
+
 
   return (
     <section className="relative pt-32 sm:pt-40 pb-20 overflow-hidden">
